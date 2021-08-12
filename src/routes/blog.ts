@@ -3,8 +3,8 @@ import { Server, IncomingMessage, ServerResponse } from 'http';
 import superagent from 'superagent';
 import cheerio from 'cheerio';
 
-const blogURL = 'https://www.defectink.com';
-const aDay = 86400000;
+const blogURL = 'https://www.defectink.com'; // Blog URL
+const aDay = 86400000; // 一天的毫秒数
 
 interface Post {
   title: string;
