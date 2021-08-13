@@ -2,9 +2,9 @@ import { FastifyInstance } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import superagent from 'superagent';
 import cheerio from 'cheerio';
+import { aDay } from '../util/CONSTS';
 
 const blogURL = 'https://www.defectink.com'; // Blog URL
-const aDay = 86400000; // 一天的毫秒数
 
 interface Post {
   title: string;
