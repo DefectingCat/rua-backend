@@ -35,7 +35,7 @@ const queryPost = async () => {
   const res = await getPost();
   const $ = cheerio.load(res);
 
-  const posts: Post[] = [];
+  let posts: Post[] = [];
 
   $('.post-wrapper').each(function () {
     const title = $(this).find('.article-title > a').text();
@@ -50,6 +50,8 @@ const queryPost = async () => {
       url,
     });
   });
+
+  posts = posts.slice(0, 6); // 只保留 6 篇
 
   return posts;
 };

@@ -1,5 +1,6 @@
 import fastify, { FastifyInstance } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
+import cors from 'fastify-cors';
 import config from './config';
 import wakatime from './routes/wakatime';
 import blog from './routes/blog';
@@ -9,6 +10,7 @@ const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
     logger: true,
   });
 
+server.register(cors);
 server.register(wakatime, { prefix: '/waka' });
 server.register(blog, { prefix: '/blog' });
 
