@@ -5,6 +5,7 @@ import path from 'path';
 import fsp from 'fs/promises';
 import fs from 'fs';
 import { aDay } from '../util/CONSTS';
+import logger from '../logger';
 
 const waka1 =
   'https://wakatime.com/share/@Defectink/e111bc66-8713-4893-8be6-cb8bb58708b6.svg';
@@ -46,6 +47,8 @@ const wakatime = async (
   fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>
 ): Promise<void> => {
   fastify.get('/gram1', async (req: FastifyRequest, res: FastifyReply) => {
+    logger.info(req.headers); // 记录请求头
+
     if (cacheDate == null) {
       await cacheSVG(1);
     } else {
@@ -59,6 +62,8 @@ const wakatime = async (
     return fs.createReadStream(`${staticPath}/waka1.svg`);
   });
   fastify.get('/gram2', async (req: FastifyRequest, res: FastifyReply) => {
+    logger.info(req.headers); // 记录请求头
+
     if (cacheDate == null) {
       await cacheSVG(2);
     } else {

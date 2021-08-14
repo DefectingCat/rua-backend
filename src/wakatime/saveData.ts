@@ -8,6 +8,7 @@ import db from '../db';
 import config from '../config';
 import fs from 'fs/promises';
 import path from 'path';
+import logger from '../logger';
 
 const filePath = path.resolve(__dirname, 'wakatime.json');
 let count = 0;
@@ -17,18 +18,25 @@ let count = 0;
  */
 const saveData = async () => {
   db.connect(config.DB_HOST);
-  console.log('DB connected');
+  logger.info('DB connected.');
 
-  const file = await fs.readFile(filePath, { encoding: 'utf-8' });
-  const data = JSON.parse(file);
-  const days = data.days;
+  try {
+    const file = await fs.readFile(filePath, { encoding: 'utf-8' });
+    const data = JSON.parse(file);
+    const days = data.days;
 
-  for (const day of days) {
-    await models.Waka.create(day);
-    console.log(++count);
+    for (const day of days) {
+      await models.Waka.create(day);
+      console.log(++count);
+    }
+  } catch (e) {
+    console.log(e);
+    logger.error('Seed data failure!');
+    logger.error(e);
+    process.exit(1);
   }
 
-  console.log('Done!');
+  logger.info('Seed data done.');
 };
 
 saveData();

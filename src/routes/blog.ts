@@ -1,8 +1,9 @@
-import { FastifyInstance } from 'fastify';
+import { FastifyInstance, FastifyRequest } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import superagent from 'superagent';
 import cheerio from 'cheerio';
 import { aDay } from '../util/CONSTS';
+import logger from '../logger';
 
 const blogURL = 'https://www.defectink.com'; // Blog URL
 
@@ -65,7 +66,9 @@ const blog = async (
   /**
    * 获取 blog 最新的 10 条 post
    */
-  fastify.get('/', async () => {
+  fastify.get('/', async (req: FastifyRequest) => {
+    logger.info(req.headers); // 记录请求头
+
     if (cacheDate == null) {
       // 如果没有上次的查询时间，则直接更新缓存
       cache = await queryPost();

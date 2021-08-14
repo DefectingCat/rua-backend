@@ -5,6 +5,11 @@ import getYestoday from '../util/getYestoday';
 import logger from '../logger';
 
 const API_URL = 'https://wakatime.com/api/v1/users/current/summaries'; // API URL
+
+/**
+ * API KEY 的格式为在 .env 中：
+ * API_KEY=xxxxxx
+ */
 const API_KEY = process.env.API_KEY;
 const QUERY = {
   start: getYestoday(),
@@ -41,17 +46,19 @@ const getDate = (): Promise<string> | undefined => {
  * 将昨天的数据保存到 mongo
  */
 const rule = new schedule.RecurrenceRule();
-rule.hour = 1;
+rule.hour = 1; // 每天的凌晨一点
 
 const getDailyDateSchedule = (): void => {
   schedule.scheduleJob(rule, async () => {
     logger.info('Start to get new wakatime data.');
+    // 从 API 获取数据
     const res = await getDate();
     if (res) {
       try {
         const result = JSON.parse(res);
         const data = result.data;
 
+        // data 为一个数组
         for (const item of data) {
           await models.Waka.create(item);
         }

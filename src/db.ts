@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import logger from './logger';
 
 export default {
   /**
@@ -18,6 +19,10 @@ export default {
     mongoose.connection.on('error', (err) => {
       console.log(err);
       console.log(
+        'MongoDB connection error. Please make sure MongoDB is running.'
+      );
+      logger.error(err);
+      logger.error(
         'MongoDB connection error. Please make sure MongoDB is running.'
       );
       process.exit();
