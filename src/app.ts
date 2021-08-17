@@ -6,7 +6,7 @@ import wakatime from './routes/wakatime';
 import blog from './routes/blog';
 import db from './db';
 import logger from './logger';
-import helmet from 'fastify-helmet';
+// import helmet from 'fastify-helmet';
 import getDailyDateSchedule from './wakatime/DailySummary';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -25,7 +25,7 @@ logger.info('DB connected.');
 getDailyDateSchedule();
 logger.info('Set daily schedule.');
 
-server.register(helmet);
+// server.register(helmet, { contentSecurityPolicy: false });
 server.register(cors);
 server.register(wakatime, { prefix: '/waka' });
 server.register(blog, { prefix: '/blog' });
