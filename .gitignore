@@ -7,6 +7,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+waka1.svg
+waka2.svg
 
 # Runtime data
 pids

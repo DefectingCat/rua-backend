@@ -15,7 +15,9 @@ export default {
     mongoose.set('useCreateIndex', true);
     // 使用新的服务器发现和监控引擎
     mongoose.set('useUnifiedTopology', true);
-    mongoose.connect(DB_HOST);
+    mongoose.connect(DB_HOST).then(() => {
+      logger.info('DB connected.');
+    });
     mongoose.connection.on('error', (err) => {
       console.log(err);
       console.log(

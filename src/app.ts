@@ -20,7 +20,6 @@ const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   });
 
 db.connect(config.DB_HOST);
-logger.info('DB connected.');
 
 getDailyDateSchedule();
 logger.info('Set daily schedule.');
