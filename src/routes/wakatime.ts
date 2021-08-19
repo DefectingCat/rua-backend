@@ -25,6 +25,15 @@ const getSVG = (url: string): Promise<Buffer> => {
 const wakatime = async (
   fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>
 ): Promise<void> => {
+  fastify.get('/', async (req: FastifyRequest) => {
+    logger.info(req.headers); // 记录请求头
+
+    return {
+      message: 'Hello, try to GET with path /waka/gram1 or /waka/gram2',
+      status: 'ok',
+    };
+  });
+
   fastify.get('/gram1', async (req: FastifyRequest, res: FastifyReply) => {
     logger.info(req.headers); // 记录请求头
 
@@ -43,6 +52,7 @@ const wakatime = async (
     res.type('image/svg+xml');
     return data;
   });
+
   fastify.get('/gram2', async (req: FastifyRequest, res: FastifyReply) => {
     logger.info(req.headers); // 记录请求头
 
