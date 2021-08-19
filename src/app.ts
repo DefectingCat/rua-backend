@@ -4,6 +4,7 @@ import cors from 'fastify-cors';
 import config from './config';
 import wakatime from './routes/wakatime';
 import blog from './routes/blog';
+import heatmap from './routes/heatmap';
 import db from './db';
 import logger from './logger';
 // import helmet from 'fastify-helmet';
@@ -28,6 +29,7 @@ logger.info('Set daily schedule.');
 server.register(cors);
 server.register(wakatime, { prefix: '/waka' });
 server.register(blog, { prefix: '/blog' });
+server.register(heatmap, { prefix: '/heatmap' });
 
 const start = async () => {
   try {

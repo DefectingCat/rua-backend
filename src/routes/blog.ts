@@ -2,8 +2,8 @@ import { FastifyInstance, FastifyRequest } from 'fastify';
 import { Server, IncomingMessage, ServerResponse } from 'http';
 import superagent from 'superagent';
 import cheerio from 'cheerio';
-import { aDay } from '../util/CONSTS';
 import logger from '../logger';
+import { getAsync, setexAsync } from '../redis';
 
 const blogURL = 'https://www.defectink.com'; // Blog URL
 
@@ -57,32 +57,28 @@ const queryPost = async () => {
   return posts;
 };
 
-let cache: Post[]; // 缓存内容
-let cacheDate: number | null = null; // 缓存的时间
-
 const blog = async (
   fastify: FastifyInstance<Server, IncomingMessage, ServerResponse>
 ): Promise<void> => {
   /**
-   * 获取 blog 最新的 10 条 post
+   * 获取 blog 最新的 6 条 post
    */
   fastify.get('/', async (req: FastifyRequest) => {
     logger.info(req.headers); // 记录请求头
 
-    if (cacheDate == null) {
+    let data = await getAsync('blogCache');
+
+    if (data == null) {
       // 如果没有上次的查询时间，则直接更新缓存
-      cache = await queryPost();
-      cacheDate = Date.now();
-    } else {
-      // 如果间隔大于一天，则更新缓存
-      const isRenew = Date.now() - cacheDate > aDay;
-      if (isRenew) {
-        cache = await queryPost();
-        cacheDate = Date.now();
-      }
+      await setexAsync(
+        'blogCache',
+        60 * 60 * 24,
+        JSON.stringify(await queryPost())
+      );
+      data = await getAsync('blogCache');
     }
 
-    return cache;
+    return data;
   });
 };
 

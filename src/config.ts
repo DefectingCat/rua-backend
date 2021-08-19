@@ -4,4 +4,5 @@ export default {
     process.env.NODE_ENV === 'production'
       ? 'mongodb://mongo/wakatime'
       : 'mongodb://127.0.0.1/wakatime',
+  REDIS: process.env.NODE_ENV === 'production' ? 'redis' : '127.0.0.1',
 };
