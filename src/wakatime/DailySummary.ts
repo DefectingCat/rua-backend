@@ -45,11 +45,11 @@ const getDate = (): Promise<string> | undefined => {
  * 每天凌晨一点运行
  * 将昨天的数据保存到 mongo
  */
-const rule = new schedule.RecurrenceRule();
-rule.hour = 1; // 每天的凌晨一点
+// const rule = new schedule.RecurrenceRule();
+// rule.hour = 1; // 每天的凌晨一点
 
 const getDailyDateSchedule = (): void => {
-  schedule.scheduleJob(rule, async () => {
+  schedule.scheduleJob('1 * * *', async () => {
     logger.info('Start to get new wakatime data.');
     // 从 API 获取数据
     const res = await getDate();
