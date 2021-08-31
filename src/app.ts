@@ -10,11 +10,6 @@ import defaultRouter from './routes/default';
 import logger from './logger';
 // import helmet from 'fastify-helmet';
 import getDailyDateSchedule from './wakatime/DailySummary';
-import dotenv from 'dotenv';
-import path from 'path';
-
-const envPath = path.resolve(__dirname, '../.env');
-dotenv.config({ path: envPath }); // 设置 env 变量
 
 const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
   fastify({

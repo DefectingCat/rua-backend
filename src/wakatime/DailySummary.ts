@@ -3,8 +3,12 @@ import schedule from 'node-schedule';
 import superagent from 'superagent';
 import getYestoday from '../util/getYestoday';
 import logger from '../logger';
+import path from 'path';
+import dotenv from 'dotenv';
 
 const API_URL = 'https://wakatime.com/api/v1/users/current/summaries'; // API URL
+const envPath = path.resolve(__dirname, '../../.env');
+dotenv.config({ path: envPath }); // 设置 env 变量
 
 /**
  * API KEY 的格式为在 .env 中：
@@ -49,7 +53,7 @@ const getDate = (): Promise<string> | undefined => {
 // rule.hour = 1; // 每天的凌晨一点
 
 const getDailyDateSchedule = (): void => {
-  schedule.scheduleJob('1 * * *', async () => {
+  schedule.scheduleJob('0 1 * * *', async () => {
     logger.info('Start to get new wakatime data.');
     // 从 API 获取数据
     const res = await getDate();
