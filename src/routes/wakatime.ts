@@ -71,6 +71,27 @@ const wakatime = async (
     res.type('image/svg+xml');
     return data;
   });
+
+  fastify.post('/update', async (req: FastifyRequest) => {
+    logger.info(req.headers); // 记录请求头
+
+    // 分别更新两个图表并缓存到 Redis
+    await setexAsync(
+      'waka1Cache',
+      60 * 60 * 24 * 7,
+      (await getSVG(waka1)).toString()
+    );
+
+    await setexAsync(
+      'waka2Cache',
+      60 * 60 * 24 * 7,
+      (await getSVG(waka2)).toString()
+    );
+
+    return {
+      status: 'ok',
+    };
+  });
 };
 
 export default wakatime;
